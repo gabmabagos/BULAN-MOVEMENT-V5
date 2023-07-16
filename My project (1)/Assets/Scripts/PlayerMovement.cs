@@ -166,26 +166,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         tr.emitting = true;
-        while(isDashing)
-        {
-            if(Input.GetKeyDown("k"))
-            {
-                if(dirFire)
-                {
-                    Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
-                    isFiring = false;
-                    fireRateTimer = 0f;
-                    isDashing = false;
-                }
-                else
-                {
-                    Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
-                    isFiring = false;
-                    fireRateTimer = 0f;
-                    isDashing = false;
-                }
-            }
-        }
+
         yield return new WaitForSeconds(dashingTime);
 
         rb.gravityScale = originalGravity;

@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     //movement
     private float dirX = 0f;
     public float horizontalMove = 0f;
-    [SerializeField] private float moveSpeed = 4;
+    [SerializeField] private float moveSpeed = 7;
     [SerializeField] private float jumpForce = 14;
 
     //dash
@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float wallSlidingSpeed = 2f;
     public float dashingPower = 24f;
-    public float dashingTime =0.2f;
+    public float dashingTime =1f; //0.2f
     public float dashingCooldown =1f;
 
     //wall jump
@@ -116,21 +116,37 @@ public class PlayerMovement : MonoBehaviour
 		{
             anim.SetTrigger("CombatRanged");
 			isFiring = true;
-			StartCoroutine(DelayFire());
-            //Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 2, rb.transform.position.y), transform.rotation);
+            StartCoroutine(DelayFire());
+            /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 2, rb.transform.position.y), transform.rotation);
             isFiring = false;
-			fireRateTimer = 0f;
+			fireRateTimer = 0f;*/
 		}
 		else if (Input.GetKeyDown("j") && !dirFire && fireRateTimer >= fireRate)
 		{
+            anim.SetTrigger("CombatRanged");
 			isFiring = true;
-			StartCoroutine(DelayFire());
-            //Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 2, rb.transform.position.y), transform.rotation);
+            StartCoroutine(DelayFire());
+            /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 2, rb.transform.position.y), transform.rotation);
 			isFiring = false;
-
-			fireRateTimer = 0f;
+			fireRateTimer = 0f;*/
 		}
-
+        /*
+        if(Input.GetKeyDown("k") && !canDash)
+        {
+            if(dirFire)
+            {
+                Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
+                isFiring = false;
+                fireRateTimer = 0f;
+            }
+            else
+            {
+                Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
+                isFiring = false;
+                fireRateTimer = 0f;
+            }
+        }
+        */
 		UpdateAnimationState();
     }
 
@@ -150,6 +166,26 @@ public class PlayerMovement : MonoBehaviour
         }
 
         tr.emitting = true;
+        while(isDashing)
+        {
+            if(Input.GetKeyDown("k"))
+            {
+                if(dirFire)
+                {
+                    Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
+                    isFiring = false;
+                    fireRateTimer = 0f;
+                    isDashing = false;
+                }
+                else
+                {
+                    Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
+                    isFiring = false;
+                    fireRateTimer = 0f;
+                    isDashing = false;
+                }
+            }
+        }
         yield return new WaitForSeconds(dashingTime);
 
         rb.gravityScale = originalGravity;
@@ -167,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("Shield",true);
             shield.SetActive(true);
             shielded = true;
-            Invoke("notShielded",3f);
+            Invoke("notShielded", 3f);
         }
 
     }
@@ -185,13 +221,14 @@ public class PlayerMovement : MonoBehaviour
         {
             FacingRight = !FacingRight;
 		    transform.Rotate (0f,180f,0f);
+            dirFire = true;
         }
 
         else if (dirX < 0 &&FacingRight&&!isWallJumping)
         {  
             FacingRight = !FacingRight;
 		    transform.Rotate (0f,180f,0f);
-
+            dirFire = false;
         }
 
 
@@ -275,17 +312,18 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator DelayFire()
     {
         yield return new WaitForSeconds(0.25f);
-        if(dirFire)
+        if(dirFire && fireRateTimer >= fireRate)
         {
-        Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 2, rb.transform.position.y), transform.rotation);
-
+            Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
+            isFiring = false;
+			fireRateTimer = 0f;
         }
-        
-        else if(!dirFire)
+        else
         {
-        Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 2, rb.transform.position.y), transform.rotation);
-
+            Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
+			isFiring = false;
+			fireRateTimer = 0f;
         }
-
     }
+
 }

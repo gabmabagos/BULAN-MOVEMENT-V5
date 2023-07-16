@@ -24,12 +24,16 @@ public class CombatMelee : MonoBehaviour
 
     void Update()
     {
+        MeleeAttack();
+    }
+        
+    void MeleeAttack()
+    {
         if(timeBtwAttack <=0){
             if(Input.GetKeyDown("g"))
             {
                 AttackProjectile.SetActive(true);
                 AttackProjectileState = true;
-                //Debug.Log(AttackProjectileState);
 
                 Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position,attackRange,whatIsEnemies);
                 AttackDetails[0] = damage;
@@ -49,10 +53,8 @@ public class CombatMelee : MonoBehaviour
             else
             {
                 timeBtwAttack -= Time.deltaTime;
-            }
-        
+        }
     }
-        
         
     void OnDrawGizmosSelected(){
         Gizmos.color = Color.red;

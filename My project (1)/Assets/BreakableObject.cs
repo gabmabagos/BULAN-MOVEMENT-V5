@@ -14,10 +14,10 @@ public class BreakableObject : MonoBehaviour
     void Start()
     {
         Target = new Vector2(brokenbit.transform.position.x, FixedCrate.transform.position.y);
-        Debug.Log(Target);
+        //.Log(Target);
 
         Target = new Vector2(FixedCrate.transform.position.x, FixedCrate.transform.position.y);
-        Debug.Log(Target);
+        //Debug.Log(Target);
         
     }
 

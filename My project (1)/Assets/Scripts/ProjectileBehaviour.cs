@@ -5,11 +5,16 @@ using UnityEngine;
 public class ProjectileBehaviour : MonoBehaviour
 {
     public float Speed = 10f;
-    public Rigidbody2D rb;
+    //public Rigidbody2D rb;
+    private Rigidbody2D bulletrb;
+    
     // Update is called once per frame
    private void Start()
     {
-        rb.velocity = transform.right * Speed;
+        bulletrb = GetComponent<Rigidbody2D>();
+        if (PlayerMovement.dirFire == true) bulletrb.velocity = Vector2.right * Speed;
+        else bulletrb.velocity = Vector2.left * Speed;
+        Destroy(gameObject, 20f);
     }
 
 

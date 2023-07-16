@@ -11,6 +11,8 @@ public class LedgeClimb : MonoBehaviour
     private float startingGrav;
     public LayerMask groundMask;
 
+    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,10 +29,12 @@ public class LedgeClimb : MonoBehaviour
         if (greenBox && !redBox && !PlayerVariable.isGrabbing && PlayerVariable.isJumping)
         {
             PlayerVariable.isGrabbing = true;
+
         }
 
         if (PlayerVariable.isGrabbing)
         {
+            PlayerVariable.isGrabbing = false;
             anim.SetBool("LedgeClimb", true);
             StartCoroutine(ClimbUp());
             rb.gravityScale = startingGrav;
@@ -41,13 +45,20 @@ public class LedgeClimb : MonoBehaviour
 
     IEnumerator ClimbUp()
     {
-        yield return new WaitForSeconds(0.15f);
-        transform.position = new Vector2(transform.position.x + (0.11f), transform.position.y + 0.1f);
+        PlayerVariable.isGrabbing = false;
+        rb.constraints |= RigidbodyConstraints2D.FreezePositionX;
+        rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
+        yield return new WaitForSeconds(0.001f);
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+        rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        transform.position = new Vector2(transform.position.x + 0.5f, transform.position.y + 0.5f);
+        Debug.Log(transform.position.x + 0.2f + transform.position.y + 0.2f);
+        //transform.position = new Vector2(transform.position.x + (0.2f), transform.position.y + 0.2f);
     }
 
     IEnumerator DisableClimbAnimation()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.01f);
         anim.SetBool("LedgeClimb", false);
     }
 

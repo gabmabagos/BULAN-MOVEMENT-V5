@@ -112,44 +112,14 @@ public class PlayerMovement : MonoBehaviour
 		//7 12 added script (firing)
 		fireRateTimer += Time.deltaTime;
 
-		if (Input.GetKeyDown("j") && dirFire && fireRateTimer >= fireRate && !isFiring)
-		{
+        if (Input.GetKeyDown("j") && fireRateTimer >= fireRate && !isFiring)
+        {
             isFiring = true;
             anim.SetTrigger("CombatRanged");
-			 // isFiring = true;
             StartCoroutine(DelayFire());
-            /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 2, rb.transform.position.y), transform.rotation);
-            isFiring = false;
-			fireRateTimer = 0f;*/
-		}
-		else if (Input.GetKeyDown("j") && !dirFire && fireRateTimer >= fireRate && !isFiring)
-		{
-            //isFiring = true;
-            anim.SetTrigger("CombatRanged");
-			isFiring = true; // isFiring = true;
-            StartCoroutine(DelayFire());
-            /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 2, rb.transform.position.y), transform.rotation);
-			isFiring = false;
-			fireRateTimer = 0f;*/
-		}
-        /*
-        if(Input.GetKeyDown("k") && !canDash)
-        {
-            if(dirFire)
-            {
-                Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
-                isFiring = false;
-                fireRateTimer = 0f;
-            }
-            else
-            {
-                Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
-                isFiring = false;
-                fireRateTimer = 0f;
-            }
         }
-        */
-		UpdateAnimationState();
+
+        UpdateAnimationState();
     }
 
     private IEnumerator Dash(){
@@ -160,11 +130,11 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0f;
 
         if(!FacingRight){
-            rb.velocity = new Vector2(-13f,0f);
+            rb.velocity = new Vector2(-dashingPower,0f);
         }
 
         else{
-            rb.velocity = new Vector2(13f,0f);
+            rb.velocity = new Vector2(dashingPower,0f);
         }
 
         tr.emitting = true;
@@ -183,6 +153,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetKeyDown("e")&&!shielded)
         {
+            //rb.velocity =
             anim.SetBool("Shield",true);
             shield.SetActive(true);
             shielded = true;
@@ -200,14 +171,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateAnimationState()
     {
-		if (dirX > 0 && !FacingRight&&!isWallJumping)
+		if (dirX > 0 && !FacingRight && !isWallJumping)
         {
             FacingRight = !FacingRight;
 		    transform.Rotate (0f,180f,0f);
             dirFire = true;
         }
 
-        else if (dirX < 0 &&FacingRight&&!isWallJumping)
+        else if (dirX < 0 && FacingRight && !isWallJumping)
         {  
             FacingRight = !FacingRight;
 		    transform.Rotate (0f,180f,0f);
@@ -295,15 +266,15 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator DelayFire()
     {
         yield return new WaitForSeconds(0.25f);
-        if(dirFire && fireRateTimer >= fireRate)
+        if (dirFire && fireRateTimer >= fireRate)
         {
             Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
-			fireRateTimer = 0f;
+            fireRateTimer = 0f;
         }
         else
         {
             Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
-			fireRateTimer = 0f;
+            fireRateTimer = 0f;
         }
 
         yield return new WaitForSeconds(0.75f);

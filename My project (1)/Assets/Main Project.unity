@@ -2587,6 +2587,14 @@ PrefabInstance:
       propertyPath: m_Parameters.colorGradient.m_Mode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 266515117781478664, guid: 11bdb73f09094014089076adb6d9badf, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 266515117781478664, guid: 11bdb73f09094014089076adb6d9badf, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1231666989734566302, guid: 11bdb73f09094014089076adb6d9badf, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2648,6 +2656,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 712880079}
     - target: {fileID: 5090842262292794623, guid: 11bdb73f09094014089076adb6d9badf, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636535776967514078, guid: 11bdb73f09094014089076adb6d9badf, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}

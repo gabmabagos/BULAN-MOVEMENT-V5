@@ -112,19 +112,21 @@ public class PlayerMovement : MonoBehaviour
 		//7 12 added script (firing)
 		fireRateTimer += Time.deltaTime;
 
-		if (Input.GetKeyDown("j") && dirFire && fireRateTimer >= fireRate)
+		if (Input.GetKeyDown("j") && dirFire && fireRateTimer >= fireRate && !isFiring)
 		{
+            isFiring = true;
             anim.SetTrigger("CombatRanged");
-			isFiring = true;
+			 // isFiring = true;
             StartCoroutine(DelayFire());
             /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 2, rb.transform.position.y), transform.rotation);
             isFiring = false;
 			fireRateTimer = 0f;*/
 		}
-		else if (Input.GetKeyDown("j") && !dirFire && fireRateTimer >= fireRate)
+		else if (Input.GetKeyDown("j") && !dirFire && fireRateTimer >= fireRate && !isFiring)
 		{
+            //isFiring = true;
             anim.SetTrigger("CombatRanged");
-			isFiring = true;
+			isFiring = true; // isFiring = true;
             StartCoroutine(DelayFire());
             /*Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 2, rb.transform.position.y), transform.rotation);
 			isFiring = false;
@@ -296,15 +298,16 @@ public class PlayerMovement : MonoBehaviour
         if(dirFire && fireRateTimer >= fireRate)
         {
             Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x + 1, rb.transform.position.y), transform.rotation);
-            isFiring = false;
 			fireRateTimer = 0f;
         }
         else
         {
             Instantiate(PseudoBulletProjectile, new Vector2(rb.transform.position.x - 1, rb.transform.position.y), transform.rotation);
-			isFiring = false;
 			fireRateTimer = 0f;
         }
+
+        yield return new WaitForSeconds(0.75f);
+        isFiring = false;
     }
 
 }
